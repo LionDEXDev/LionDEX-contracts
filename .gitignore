@@ -1,0 +1,22 @@
+node_modules/
+.vscode
+.idea
+typechain/
+env.json
+yarn.lock
+data/gmxMigration
+data/esGmxDistribution
+data/bonds
+data/batchSend
+data/nft
+data/snapshotBalance
+data/holders
+flattened
+distribution-data*.json
+**/.DS_Store
+
+.tmp-*.json
+#Hardhat files
+cache
+artifacts
+
