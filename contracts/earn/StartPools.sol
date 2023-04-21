@@ -12,6 +12,8 @@ interface ILionDEXRewardVault{
     function withdrawToken(IERC20 token,uint256 amount) external;
 }
 
+
+
 contract StartPools is OwnableUpgradeable {
     using SafeERC20 for IERC20;
 
@@ -76,7 +78,7 @@ contract StartPools is OwnableUpgradeable {
         poolInfo.push(
             PoolInfo(
                 startTime,
-                uint32(block.timestamp), //lastRewardTime
+                uint32(startTime), //lastRewardTime
                 new uint256[](2),
                 new uint256[](2), //accRewardTokenPerShare
                 0 //totalStaked
@@ -85,7 +87,7 @@ contract StartPools is OwnableUpgradeable {
         poolInfo.push(
             PoolInfo(
                 0,
-                uint32(block.timestamp), //lastRewardTime
+                uint32(startTime), //lastRewardTime
                 new uint256[](2),
                 new uint256[](2), //accRewardTokenPerShare
                 0 //totalStaked
@@ -148,6 +150,9 @@ contract StartPools is OwnableUpgradeable {
     // Update reward variables of the given pool to be up-to-date.
     function updatePool(uint256 _pid) public {
         PoolInfo storage pool = poolInfo[_pid];
+        if(pool.startTime == 0){
+            return;
+        }
         if (block.timestamp <= pool.lastRewardTime) {
             return;
         }
@@ -313,6 +318,7 @@ contract StartPools is OwnableUpgradeable {
         if (currentPool.totalStaked >= (level[0]* uint256(levelRatio) / uint256(BasePoint))) {
             //open pool 1
             pool1.startTime = startTime;
+            pool1.lastRewardTime = uint32(block.timestamp);
         }
     }
 
